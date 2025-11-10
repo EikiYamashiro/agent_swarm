@@ -1,0 +1,17 @@
+version: '3.9'
+
+services:
+  app:
+    build: .
+    container_name: chatbot-app
+    environment:
+      - GEMINI_MODEL=gemini-2.0-flash # You can change the model
+      - GEMINI_API_KEY=${YOUR GEMINI_API_KEY HERE}
+      - BACKEND_URL=http://localhost:8000
+    volumes:
+      - ./credentials.json:/app/credentials.json:ro
+      - ./:/app
+    ports:
+      - "8000:8000"
+      - "8501:8501"
+    restart: unless-stopped

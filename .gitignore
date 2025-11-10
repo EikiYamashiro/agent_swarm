@@ -1,0 +1,48 @@
+# Environment files
+.env
+
+# Virtual environments
+venv/
+.venv/
+venv.py
+
+# Python cache
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+# Byte-compiled / optimized / DLL files
+*.pyc
+*.pyo
+*.pyd
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# IDEs and editors
+.vscode/
+.idea/
+
+# Test / coverage
+.pytest_cache/
+.coverage
+
+# Logs
+*.log
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Optional: lock files and environment local overrides
+pip-wheel-metadata/
+
+# Node (if present)
+node_modules/
+
+# Ignore data files created by the app (if you store data locally in repo/data)
+backend/data/*.json
