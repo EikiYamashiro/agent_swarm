@@ -20,10 +20,16 @@ A simple RAG (Retrieval Augmented Generation) system that answers questions abou
 cp .env.example .env
 # Edit .env and add your GEMINI_API_KEY
 ```
-
 2. Build and run containers:
+
+#### Windows (PowerShell)
 ```bash
 docker-compose up --build
+```
+
+#### Mac / Linux (Terminal)
+```bash
+docker compose up --build
 ```
 
 3. Access the application:

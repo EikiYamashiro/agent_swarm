@@ -4,10 +4,12 @@ services:
   app:
     build: .
     container_name: chatbot-app
+    env_file:
+      - .env
     environment:
-      - GEMINI_MODEL=gemini-2.0-flash # You can change the model
-      - GEMINI_API_KEY=${YOUR GEMINI_API_KEY HERE}
-      - BACKEND_URL=http://localhost:8000
+      - GEMINI_MODEL=${GEMINI_MODEL:-gemini-2.0-flash} # default to gemini-2.0-flash if not set
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - BACKEND_URL=${BACKEND_URL:-http://localhost:8000}
     volumes:
       - ./credentials.json:/app/credentials.json:ro
       - ./:/app
