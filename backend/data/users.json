@@ -1,0 +1,18 @@
+{
+  "users": [
+    {
+      "user_id": "client789",
+      "name": "Alice Silva",
+      "email": "alice@example.com",
+      "account_status": "active",
+      "created_at": "2024-01-15"
+    },
+    {
+      "user_id": "client456",
+      "name": "Bruno Souza",
+      "email": "bruno@example.com",
+      "account_status": "active",
+      "created_at": "2023-10-02"
+    }
+  ]
+}

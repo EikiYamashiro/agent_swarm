@@ -5,7 +5,7 @@ import json
 
 from .knowledge_agent import KnowledgeAgent
 from .support_agent import SupportAgent
-from .mcp_tools import gemini_agent, get_knowledge
+from .mcpo_tools import GeminiAgent, get_knowledge_tool
 from .custom_agent import CustomAgent
 from .mcp_client import MCPClient
 from .models import LLMDecision
@@ -36,18 +36,16 @@ Please:
         self.knowledge_agent = knowledge_agent
         self.support_agent = support_agent
         self.custom_agent = custom_agent
-        self.gemini_agent = gemini_agent
+        self.gemini_agent = GeminiAgent()
 
     async def route_and_respond(self, message: str, user_id: Optional[str] = None) -> Dict[str, Any]:
         observations, last_output = [], None
         max_steps = 3
 
         try:
-            knowledge = get_knowledge()
+            knowledge = get_knowledge_tool()
             parts = []
             for i, (url, summary) in enumerate(knowledge.items()):
-                if i >= 8:
-                    break
                 s = (summary or "").replace("\n", " ")
                 parts.append(f"- {url}: {s[:200]}{'...' if len(s) > 200 else ''}")
             knowledge_context = "\n".join(parts) if parts else "(no knowledge entries)"
@@ -83,9 +81,9 @@ Please:
             observations.append(f"Step {step + 1} via {sel}: {obs_text}")
 
             if decision.is_final:
-                return self._format_final(message, observations, last_output, used_retrieval=(sel == "RETRIEVE"))
+                return await self._format_final(message, observations, last_output, used_retrieval=(sel == "RETRIEVE"))
 
-        return self._format_final(message, observations, last_output, used_retrieval=False)
+        return await self._format_final(message, observations, last_output, used_retrieval=False)
 
     async def _dispatch(self, sel: str, message: str, user_id: Optional[str]) -> Dict[str, Any]:
         if sel == "SUPPORT" and self.support_agent:
@@ -104,7 +102,7 @@ Please:
         direct = self.gemini_agent.generate(message)
         return {"answer": direct.get("answer") or direct.get("text"), "tools_used": []}
 
-    def _format_final(self, message: str, observations: list, last_output: Dict[str, Any], used_retrieval: bool):
+    async def _format_final(self, message: str, observations: list, last_output: Dict[str, Any], used_retrieval: bool):
         context = "\n\n".join(observations)
         prompt = self.FORMATTING_PROMPT.format(context=context, initial_answer=message)
         final = self.gemini_agent.generate(prompt)

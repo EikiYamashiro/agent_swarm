@@ -43,6 +43,3 @@ pip-wheel-metadata/
 
 # Node (if present)
 node_modules/
-
-# Ignore data files created by the app (if you store data locally in repo/data)
-backend/data/*.json
