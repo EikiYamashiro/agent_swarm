@@ -8,7 +8,7 @@ from .support_agent import SupportAgent
 from .mcpo_tools import GeminiAgent, get_knowledge_tool
 from .custom_agent import CustomAgent
 from .mcp_client import MCPClient
-from .models import LLMDecision
+from .models import LLMDecision, FinalAnswer
 
 
 class RouterAgent:
@@ -25,6 +25,13 @@ Please:
 2. Improve clarity and readability
 3. Use paragraphs where appropriate
 4. Keep a professional, user-friendly tone
+5. **Always respond in the same language as the Initial Answer**
+
+Respond ONLY with valid JSON:
+{{
+  "answer": "final answer text here",
+  "reasoning": "short reasoning for your choice"
+}}
 """
 
     def __init__(
@@ -107,7 +114,13 @@ Please:
         prompt = self.FORMATTING_PROMPT.format(context=context, initial_answer=message)
         final = self.gemini_agent.generate(prompt)
 
-        final_text = final.get("answer") or final.get("text") if isinstance(final, dict) else str(final)
+        final = self.gemini_agent.generate_structured(prompt, FinalAnswer)
+
+        if isinstance(final, FinalAnswer):
+            final_text = final.answer
+        else:
+            final_text = "Sorry, I couldn’t generate an appropriate response. Please try again."
+            
         sources = last_output.get("sources", []) if isinstance(last_output, dict) else []
 
         return {

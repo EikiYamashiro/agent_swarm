@@ -139,7 +139,7 @@ class KnowledgeAgent:
             hits = self.retrieve(query, top_k=3)
             if not hits:
                 return {
-                    "answer": "Não encontrei informações suficientes para responder.",
+                    "answer": "I couldn't find enough information to answer.",
                     "sources": []
                 }
 
@@ -152,13 +152,13 @@ class KnowledgeAgent:
                 sources.add(url)
 
             if not texts:
-                return {"answer": "Nenhuma informação relevante encontrada.", "sources": []}
+                return {"answer": "No relevant information found.", "sources": []}
 
             context = "\n\n".join(texts)
             prompt = (
-                f"Com base neste contexto, responda a pergunta abaixo de forma direta e técnica:\n\n"
-                f"Pergunta: {query}\n\n"
-                f"Contexto:\n{context}"
+                f"Based on this context, answer the question below in a direct and technical manner:\n\n"
+                f"Question: {query}\n\n"
+                f"Context:\n{context}"
             )
 
             from .mcpo_tools import tool_gemini_generate
@@ -179,9 +179,9 @@ class KnowledgeAgent:
                         answer = candidates[0]["content"]["parts"][0]["text"]
 
             if not answer:
-                answer = "Não foi possível gerar uma resposta."
+                answer = "It was not possible to generate a response."
 
             return {"answer": answer, "sources": list(sources)}
 
         except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Erro ao gerar resposta: {str(e)}")
+            raise HTTPException(status_code=500, detail=f"Error to generate answer: {str(e)}")

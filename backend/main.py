@@ -77,7 +77,7 @@ async def invoke_tool(request: MCPInvokeRequest):
     params = request.parameters or {}
 
     if tool_id not in TOOLS:
-        return {"error": f"Ferramenta '{tool_id}' não reconhecida."}
+        return {"error": f"Tool '{tool_id}' not recognized."}
 
     func = TOOLS[tool_id]
     return await func(params)

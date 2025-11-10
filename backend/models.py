@@ -6,3 +6,7 @@ class LLMDecision(BaseModel):
     selected_agent: str
     is_final: bool
     reasoning: Optional[str] = None
+
+class FinalAnswer(BaseModel):
+    answer: str
+    reasoning: str
