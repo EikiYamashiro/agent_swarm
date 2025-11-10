@@ -7,7 +7,7 @@ services:
     env_file:
       - .env
     environment:
-      - GEMINI_MODEL=${GEMINI_MODEL:-gemini-2.0-flash} # default to gemini-2.0-flash if not set
+      - GEMINI_MODEL=${GEMINI_MODEL:-gemini-2.0-flash}
       - GEMINI_API_KEY=${GEMINI_API_KEY}
       - BACKEND_URL=${BACKEND_URL:-http://localhost:8000}
     volumes:
